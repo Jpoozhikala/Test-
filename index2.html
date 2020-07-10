@@ -1,0 +1,72 @@
+let request = new XMLHttpRequest();
+    <!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+
+  </head>
+
+  <body>
+
+      <header>
+
+      </header>
+      <ul>
+      </ul>
+
+      <section>
+
+      </section>
+
+    <script>
+        
+    const header = document.querySelector('header');
+    const section = document.querySelector('section');
+    const ul = document.querySelector('ul')
+
+    let requestURL = 'https://raw.githubusercontent.com/Jpoozhikala/patient.json/master/patient.json';
+    let request = new XMLHttpRequest();
+    request.open('GET', requestURL);
+    request.responseType = 'json';
+    request.send();
+
+    request.onload = function() {
+      const patient_data = request.response;
+        console.log(patient_data)
+      populateHTML(patient_data);
+    }
+
+    function populateHTML(jsonObj) {
+        
+      const patient_name = document.createElement('h1');
+      patient_name.textContent = 'Name of Patient: '+jsonObj['text']['div'];
+    
+      const organization_name = document.createElement('h1');
+      organization_name.textContent='Name of Organization: '+jsonObj['identifier']['managingOrganization']['display'];
+      
+      const gender = document.createElement('h1');
+      gender.textContent='Gender: '+jsonObj['identifier']['gender'];
+    
+      const conditions=jsonObj['identifier']['conditions'];
+        
+      const number_of_conditions=document.createElement('h1')
+      number_of_conditions.textContent='Number of conditions: ' + conditions.length;
+        
+      const list_of_conditions=document.createElement('h1')
+      list_of_conditions.textContent='List of all conditions: '
+        
+      header.appendChild(patient_name);
+      header.appendChild(organization_name);
+      header.appendChild(gender);
+      header.appendChild(number_of_conditions);
+      header.appendChild(list_of_conditions);
+    
+      for (let i=0; i<conditions.length; i++){
+          const item = document.createElement('li')
+          item.textContent=conditions[i]
+          ul.appendChild(item)
+      }
+    }
+    </script>
+  </body>
+</html>
